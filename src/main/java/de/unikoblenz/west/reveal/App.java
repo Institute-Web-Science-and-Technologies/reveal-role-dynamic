@@ -18,6 +18,13 @@ public class App
     	MongoDatabase db = mongoClient.getDatabase("us_elections");
     	
         System.out.println("Post number : " + db.getCollection("Post").count());
+        FindIterable<Document> iterable = db.getCollection("Post").find();
+        iterable.forEach(new Block<Document>() {
+            public void apply(final Document document) {
+                System.out.println(document);
+            }
+        });
+
         mongoClient.close();
     }
 }
