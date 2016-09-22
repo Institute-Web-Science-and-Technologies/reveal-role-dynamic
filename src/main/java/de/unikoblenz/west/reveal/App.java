@@ -21,10 +21,20 @@ public class App
         FindIterable<Document> iterable = db.getCollection("Post").find();
         iterable.forEach(new Block<Document>() {
             public void apply(final Document document) {
+            	String title = document.get("title").toString();
             	String contributor = document.get("contributor").toString();
+            	String shared = null;
+            	if (document.get("shared") != null)
+            		shared = document.get("shared").toString();
+            	
+            	// parsing data
             	try {
-	            	String contributorId = contributor.split("#| }")[1];
-	                System.out.println(contributorId);
+	            	String contributorId = contributor.split("id\" : \"| }")[1];
+	            	String sharedId = null;
+	            	if (shared != null)
+	            		sharedId = shared.split("id\" : \"| }")[1];
+	            	
+	                System.out.println("contributorId : " + contributorId + "\t sharedId : " + sharedId + "\t title : " + title);
             	} catch(ArrayIndexOutOfBoundsException ex) {
             		System.out.println(contributor);
             		System.err.println(ex.getMessage());
