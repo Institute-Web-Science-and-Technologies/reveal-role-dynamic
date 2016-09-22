@@ -47,7 +47,7 @@ public class App {
 		            	if (sharedId != null)
 		            		json.put("in_reply_to_user_id", sharedId);
 		    
-		                System.out.println(json.toString());
+		                outputFile.println(json.toString());
 		     
 	            	} catch(ArrayIndexOutOfBoundsException ex) {
 	            		System.out.println(contributor);
