@@ -79,9 +79,5 @@ public class RoleAnalysis {
     	coll.bulkWrite(writes);
     	mongoClient.close();
 	}
-	
-	public static void main(String[] args) throws IOException {
-		
-	}
 
 }
