@@ -11,7 +11,7 @@ import com.mongodb.client.FindIterable;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class App {
+public class RoleAnalysisDynamic {
 	
 	private static String convertToValidDigits(String s) {
 		s = s.replaceAll("[^0-9]", "");
