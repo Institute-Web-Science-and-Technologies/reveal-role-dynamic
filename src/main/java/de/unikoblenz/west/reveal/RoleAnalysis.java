@@ -3,12 +3,19 @@ package de.unikoblenz.west.reveal;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
-import com.mongodb.DBCollection;
+import org.bson.Document;
+
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.ReplaceOneModel;
+import com.mongodb.client.model.UpdateOneModel;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.WriteModel;
 
 import de.unikoblenz.west.reveal.analytics.CommunityAnalysis;
 import de.unikoblenz.west.reveal.roles.RoleAssociation;
@@ -52,19 +59,25 @@ public class RoleAnalysis {
 		RoleAssociation ra = new RoleAssociation();
 		ra.process(users);
 		
-		// Flushing results to simple log file
-		System.out.println("Writing results ...");
-		PrintStream out = new PrintStream(new File("out.log"), "UTF8");
-		for (UserWithRole uwr : users) {
-			out.println(uwr.id+"\t"+ uwr.username+"\t"+uwr.role);
-		}
-		out.close();
+		// Write results back to mongoDB
+		System.out.println("Writing results to mongoDB ...");
 		
 		MongoClient mongoClient = new MongoClient("social1.atc.gr");
     	MongoDatabase db = mongoClient.getDatabase(database);
     	
-    	//DBCollection role = db.getCollection("Role");	
+    	MongoCollection<Document> coll = db.getCollection("Role");
+    	List<WriteModel<Document>> writes = new ArrayList<WriteModel<Document>>();
     	
+    	for (UserWithRole uwr : users) {
+    		writes.add(
+    		    new UpdateOneModel<Document>(
+    		        new Document("account_id", uwr.username),	// filter
+    		        new Document("ukob_role", uwr.role),		// update
+    		    	new UpdateOptions().upsert(true))
+    		);
+    	}
+    	
+    	coll.bulkWrite(writes);
     	mongoClient.close();
 	}
 	

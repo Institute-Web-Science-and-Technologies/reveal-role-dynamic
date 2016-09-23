@@ -24,8 +24,8 @@ public class App {
     public static void main( String[] args ) throws IOException {
     	
     	String database = "us_elections";
+    	//String database = args[0];
     	
-    	/*
     	try ( PrintWriter outputFile = new PrintWriter("mongo-data.txt") ) {
 	    	MongoClient mongoClient = new MongoClient("social1.atc.gr");
 	    	MongoDatabase db = mongoClient.getDatabase(database);
@@ -76,7 +76,7 @@ public class App {
 		            	user.put("id", contributorId);
 		            	user.put("name", strContributorId);
 		            	
-		            	json.put("id", id);	// hack
+		            	json.put("id", id);		// hack
 		            	json.put("user", user);
 		            	json.put("text", title);
 		            	if (shared != null) {
@@ -95,7 +95,6 @@ public class App {
 	
 	        mongoClient.close();
     	}
-    	*/
     	
     	RoleAnalysis.update(database);
     }
