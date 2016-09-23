@@ -59,7 +59,7 @@ public class RoleAnalysis {
 		ra.process(users);
 		
 		// Write results back to mongoDB
-		System.out.println("Writing results to mongoDB ...");
+		System.out.println("Writing results to mongoDB, number of users : " + users.size());
 		
 		MongoClient mongoClient = new MongoClient("social1.atc.gr");
     	MongoDatabase db = mongoClient.getDatabase(database);
