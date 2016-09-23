@@ -8,29 +8,34 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.FindIterable;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 public class App {
 	
-	private static String limitLongStringLength(String s) {
+	private static String convertToValidDigits(String s) {
+		s = s.replaceAll("[^0-9]", "");
 		if (s.length() > 18)
 			return s.substring(s.length() - 18);
 		
 		return s;
 	}
 	
-    public static void main( String[] args ) throws FileNotFoundException {
+    public static void main( String[] args ) throws IOException {
+    	
+    	String database = "us_elections";
+    	
+    	/*
     	try ( PrintWriter outputFile = new PrintWriter("mongo-data.txt") ) {
 	    	MongoClient mongoClient = new MongoClient("social1.atc.gr");
-	    	MongoDatabase db = mongoClient.getDatabase("us_elections");
+	    	MongoDatabase db = mongoClient.getDatabase(database);
 	    	
 	        System.out.println("Post number : " + db.getCollection("Post").count());
 	        FindIterable<Document> iterable = db.getCollection("Post").find();
 
 	        iterable.forEach(new Block<Document>() {
 	            public void apply(final Document document) {
-	            	String strId = document.get("_id").toString().split("#")[1].replaceAll("[^0-9]", "");
+	            	String strId = document.get("_id").toString();
 	            	String title = document.get("title").toString();
 	            	String contributor = document.get("contributor").toString();
 	            	
@@ -40,30 +45,27 @@ public class App {
 	            	
 	            	// parsing data
 	            	try {
-		            	String strContributorId = contributor.split("#| }")[1].replaceAll("[^0-9]", "");
+		            	String strContributorId = contributor.split("id\" : \"| }")[1];
 		            	String strSharedId = "0";
 		            	if (shared != null)
-		            		strSharedId = shared.split("#| }")[1].replaceAll("[^0-9]", "");
+		            		strSharedId = shared.split("id\" : \"| }")[1];
 		            	
 		            	// cast String to Long
 		            	Long id = 0L;
 		            	try {
-		            		strId = limitLongStringLength(strId);
-		            		id = Long.parseLong(strId);
+		            		id = Long.parseLong(convertToValidDigits(strId));
 		            	} catch (NumberFormatException ex) {
 		            		System.err.println("Invalid ID, " + ex.getMessage());
 		            	}
 		            	Long contributorId = 0L;
 		            	try {
-		            		strContributorId = limitLongStringLength(strContributorId);
-		            		contributorId = Long.parseLong(strContributorId);
+		            		contributorId = Long.parseLong(convertToValidDigits(strContributorId));
 		            	} catch (NumberFormatException ex) {
 		            		System.err.println("Invalid ID, " + ex.getMessage());
 		            	}
 		            	Long sharedId = 0L;
 		            	try {
-		            		strSharedId = limitLongStringLength(strSharedId);
-		            		sharedId = Long.parseLong(strSharedId);
+		            		sharedId = Long.parseLong(convertToValidDigits(strSharedId));
 		            	} catch (NumberFormatException ex) {
 		            		System.err.println("Invalid ID, " + ex.getMessage());
 		            	}
@@ -74,11 +76,14 @@ public class App {
 		            	user.put("id", contributorId);
 		            	user.put("name", strContributorId);
 		            	
-		            	json.put("id", id);
+		            	json.put("id", id);	// hack
 		            	json.put("user", user);
 		            	json.put("text", title);
-		            	if (shared != null)
+		            	if (shared != null) {
 		            		json.put("in_reply_to_user_id", sharedId);
+		            		json.put("in_reply_to_status_id", sharedId);
+		            		json.put("in_reply_to_screen_name", strSharedId);
+		            	}
 		    
 		                outputFile.println(json.toString());
 		     
@@ -90,5 +95,8 @@ public class App {
 	
 	        mongoClient.close();
     	}
+    	*/
+    	
+    	RoleAnalysis.update(database);
     }
 }
