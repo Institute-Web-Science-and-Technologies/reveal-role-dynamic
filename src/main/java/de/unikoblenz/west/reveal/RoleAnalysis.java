@@ -12,7 +12,6 @@ import org.bson.Document;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.ReplaceOneModel;
 import com.mongodb.client.model.UpdateOneModel;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.WriteModel;
@@ -72,7 +71,7 @@ public class RoleAnalysis {
     		writes.add(
     		    new UpdateOneModel<Document>(
     		        new Document("account_id", uwr.username),	// filter
-    		        new Document("ukob_role", uwr.role),		// update
+    		        new Document("$set", new Document("ukob_role", uwr.role)),		// update
     		    	new UpdateOptions().upsert(true))
     		);
     	}

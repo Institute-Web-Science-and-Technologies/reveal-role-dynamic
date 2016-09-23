@@ -24,8 +24,9 @@ public class App {
     public static void main( String[] args ) throws IOException {
     	
     	String database = "us_elections";
-    	//String database = args[0];
-    	
+    	if (args.length > 0)
+    		database = args[0];
+
     	try ( PrintWriter outputFile = new PrintWriter("mongo-data.txt") ) {
 	    	MongoClient mongoClient = new MongoClient("social1.atc.gr");
 	    	MongoDatabase db = mongoClient.getDatabase(database);
