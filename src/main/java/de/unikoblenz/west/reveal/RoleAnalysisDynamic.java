@@ -27,7 +27,7 @@ public class RoleAnalysisDynamic {
     	if (args.length > 0)
     		database = args[0];
 
-		final PrintWriter outputFile = new PrintWriter("mongo-data.txt");
+		final PrintWriter outputFile = new PrintWriter("mongo-data-" + database);
     	try {
 	    	MongoClient mongoClient = new MongoClient("social1.atc.gr");
 	    	MongoDatabase db = mongoClient.getDatabase(database);

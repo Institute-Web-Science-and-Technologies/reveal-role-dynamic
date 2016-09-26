@@ -25,13 +25,13 @@ import de.unikoblenz.west.reveal.twitter.snow.SnowCommunityFactory;
 
 public class RoleAnalysis {
 
-	public static void update(String database) throws IOException {
+	public static void update(final String database) throws IOException {
 		// Setup for reading tweets in JSON format from input files 
 		String path = "./";
 		File inDir = new File(path);
 		String[] jsonFiles = inDir.list(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				return name.startsWith("mongo-data");
+				return name.startsWith("mongo-data-" + database);
 			}
 		});
 		for (int i = 0; i< jsonFiles.length; i++) {
