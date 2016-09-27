@@ -16,6 +16,6 @@ self-contained, including all Java dependencies.
 
 where $DATABASE_NAME is the name of the database within ATC's MongoDB to use, e.g., 'nuclear_test' or 'us_elections', etc.  
 
-When run, the program will read content from the given MongoDB database, compute roles for all users, and write out the computed roles into the table 'Role' in the same database.  The main function exists when all roles have been written to the database. 
+When run, the program will read content from the given MongoDB database, compute roles for all users, and write out the computed roles into the table 'Role' in the same database.  The main function exits when all roles have been written to the database. 
 
 The component must have write access to the database.
